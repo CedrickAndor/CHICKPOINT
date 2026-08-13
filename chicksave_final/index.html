@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChickPoint | Monitoring</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- LOGIN SCREEN: shown first. Submitting reveals the dashboard below. -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <img class="login-logo" src="CHICKpoint.png" alt="ChickPoint logo">
+      <div class="login-brand">CHICKSAVE-IN</div>
+      <p class="login-tagline">Chicken Health Heard on Point</p>
+
+      <form class="login-form" id="loginForm">
+        <div class="login-field">
+          <label class="login-label" for="loginEmail">Email or Username</label>
+          <input class="login-input" type="text" id="loginEmail" autocomplete="username" required>
+        </div>
+
+        <div class="login-field">
+          <label class="login-label" for="loginPassword">Password</label>
+          <input class="login-input" type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+
+        <button type="submit" class="login-button">Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="app hidden" id="appShell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <label class="brand-logo has-image" for="logoInput" title="Click to upload your own logo">
+          <img id="logoPreview" src="CHICKpoint.png" alt="ChickSave-IN logo">
+          <span id="logoPlaceholder">🐔</span>
+        </label>  
+        <input id="logoInput" type="file" accept="image/*" hidden>
+        <div class="brand-copy">
+          <div class="brand-name"><strong>CHICK</strong>POINT</div>
+          <div class="brand-subtitle">Bioacoustic Monitoring</div>
+        </div>
+      </div>
+
+      <div class="farm-card">
+        <span class="online-dot"></span>
+        <div>
+          <small>MONITORING FARM</small>
+          <strong>Von Jun Poultry Farm</strong>
+        </div>
+      </div>
+
+      <nav class="navigation">
+        <button class="nav-item active" data-page="monitoring">
+          <span class="nav-icon">◉</span>
+          <span>Live Monitoring</span>
+        </button>
+        <button class="nav-item" data-page="summary">
+          <span class="nav-icon">▥</span>
+          <span>Summary</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          <div>
+            <strong>System online</strong>
+            <small>Listening continuously</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+        <div class="breadcrumbs">
+          <span class="current-page" id="pageTitle">Live Monitoring</span>
+          <span>/</span>
+          <span>Von Jun Poultry Farm</span>
+        </div>
+        <div class="top-right">
+          <span class="live-indicator"><span></span> LIVE</span>
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- MODULE 1: LIVE MONITORING -->
+        <section class="page active" id="monitoring">
+          <div class="monitoring-head">
+            <div>
+              <p class="eyebrow">REAL-TIME BIOACOUSTIC MONITORING</p>
+              <h1>Live Monitoring</h1>
+            </div>
+          </div>
+
+          <!-- Empty on startup. Detection cards are inserted here every 5 seconds. -->
+          <div class="alert-area" id="alertArea"></div>
+        </section>
+
+        <!-- MODULE 2: SUMMARY -->
+        <section class="page" id="summary">
+          <div class="summary-head">
+            <div>
+              <p class="eyebrow">REAL-TIME SUMMARY</p>
+              <h1>Summary</h1>
+              <p class="summary-subtitle">This report updates immediately whenever a detection is created or resolved.</p>
+            </div>
+          </div>
+
+          <div class="summary-stats">
+            <article class="summary-stat">
+              <span>TOTAL DETECTIONS</span>
+              <strong id="summaryDetections">0</strong>
+              <small>Detected this session</small>
+            </article>
+            <article class="summary-stat">
+              <span>ACTIVE ALERTS</span>
+              <strong id="summaryActive">0</strong>
+              <small>Awaiting resolution</small>
+            </article>
+            <article class="summary-stat">
+              <span>RESOLVED</span>
+              <strong id="summaryResolved">0</strong>
+              <small>Marked resolved</small>
+            </article>
+            <article class="summary-stat">
+              <span>AFFECTED COOPS</span>
+              <strong id="summaryCoops">0</strong>
+              <small>Unique coops detected</small>
+            </article>
+          </div>
+
+          <article class="summary-card">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">LIVE REPORT</p>
+                <h2>Real-Time Detection Trend</h2>
+              </div>
+              <span class="realtime-badge"><span></span> Updates automatically</span>
+            </div>
+
+            <div class="chart-wrap">
+              <canvas id="riskChart"></canvas>
+            </div>
+
+            <div class="chart-legend">
+              <div><span class="legend-line"></span> Cumulative detections</div>
+              <div class="chart-note">Based on actual detection events in the current session.</div>
+            </div>
+          </article>
+
+          <article class="summary-card">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">DETECTION HISTORY</p>
+                <h2>Respiratory Distress Alerts</h2>
+              </div>
+            </div>
+            <div class="history-list" id="summaryHistory"></div>
+          </article>
+        </section>
+      </section>
+    </main>
+  </div>
+  <!-- /#appShell -->
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="toast-icon">!</div>
+    <div>
+      <strong id="toastTitle">Detection</strong>
+      <small id="toastMessage">Respiratory distress pattern detected.</small>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
