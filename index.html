@@ -14,13 +14,13 @@
   <div class="login-screen" id="loginScreen">
     <div class="login-card">
       <img class="login-logo" src="CHICKpoint.png" alt="ChickPoint logo">
-      <div class="login-brand">CHICKPOINT </div>
+      <div class="login-brand"><strong>CHICK</strong>POINT</div>
       <p class="login-tagline">Chicken Health Heard on Point</p>
 
       <form class="login-form" id="loginForm">
         <div class="login-field">
           <label class="login-label" for="loginEmail">Email or Username</label>
-          <input class="login-input" type="text" id="loginEmail" autocomplete="username" required>
+          <input class="login-input" type="text" id="loginEmail" placeholder="you@farm.com" autocomplete="username" required>
         </div>
 
         <div class="login-field">
@@ -37,7 +37,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="brand">
         <label class="brand-logo has-image" for="logoInput" title="Click to upload your own logo">
-          <img id="logoPreview" src="CHICKpoint.png" alt="ChickSave-IN logo">
+          <img id="logoPreview" src="CHICKpoint.png" alt="CHICKPOINT logo">
           <span id="logoPlaceholder">🐔</span>
         </label>  
         <input id="logoInput" type="file" accept="image/*" hidden>
@@ -112,6 +112,7 @@
               <h1>Summary</h1>
               <p class="summary-subtitle">This report updates immediately whenever a detection is created or resolved.</p>
             </div>
+            <button class="secondary-button" id="resetData">Reset session</button>
           </div>
 
           <div class="summary-stats">

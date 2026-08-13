@@ -1,5 +1,5 @@
 /* =========================================================
-   CHICKSAVE-IN
+   CHICKPOINT
    TWO-MODULE REAL-TIME PROTOTYPE
 
    Module 1: Live Monitoring
@@ -110,47 +110,51 @@ function showPage(page) {
   }
 }
 
-$('#mobileMenu').addEventListener('click', () => {
-  $('#sidebar').classList.toggle('open');
-});
+if ($('#mobileMenu')) {
+  $('#mobileMenu').addEventListener('click', () => {
+    $('#sidebar').classList.toggle('open');
+  });
+}
 
 /* =========================================================
    LOGO UPLOAD
 ========================================================= */
 
-$('#logoInput').addEventListener('change', (event) => {
-  const file = event.target.files?.[0];
+if ($('#logoInput')) {
+  $('#logoInput').addEventListener('change', (event) => {
+    const file = event.target.files?.[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  if (!file.type.startsWith('image/')) {
-    showToast('Invalid file', 'Please select an image file.');
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    const dataUrl = String(reader.result);
-
-    $('#logoPreview').src = dataUrl;
-    $('.brand-logo').classList.add('has-image');
-
-    try {
-      localStorage.setItem('chicksaveLogo', dataUrl);
-    } catch {
-      // The preview still works even if localStorage is unavailable.
+    if (!file.type.startsWith('image/')) {
+      showToast('Invalid file', 'Please select an image file.');
+      return;
     }
 
-    showToast('Logo updated', 'Your custom ChickSave-IN logo is now displayed.');
-  };
+    const reader = new FileReader();
 
-  reader.readAsDataURL(file);
-});
+    reader.onload = () => {
+      const dataUrl = String(reader.result);
+
+      $('#logoPreview').src = dataUrl;
+      $('.brand-logo').classList.add('has-image');
+
+      try {
+        localStorage.setItem('chickpointLogo', dataUrl);
+      } catch {
+        // The preview still works even if localStorage is unavailable.
+      }
+
+      showToast('Logo updated', 'Your custom CHICKPOINT logo is now displayed.');
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
 
 function restoreLogo() {
   try {
-    const savedLogo = localStorage.getItem('chicksaveLogo');
+    const savedLogo = localStorage.getItem('chickpointLogo');
 
     if (!savedLogo) return;
 
@@ -544,7 +548,7 @@ function renderDetectionCards() {
   );
 
   if (!activeDetections.length) {
-    alertArea.innerHTML = '';
+    alertArea.innerHTML = createEmptyState();
     return;
   }
 
@@ -557,6 +561,41 @@ function renderDetectionCards() {
       resolveDetection(button.dataset.id);
     });
   });
+}
+
+/*
+  Friendly empty state shown on Live Monitoring whenever
+  there are no active alerts. Disappears automatically the
+  moment a detection comes in, and reappears once every
+  active alert has been resolved.
+*/
+function createEmptyState() {
+  return `
+    <div class="empty-state">
+      <svg class="empty-state-art" width="180" height="140" viewBox="0 0 180 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="90" cy="122" rx="62" ry="10" fill="#e7eee3"/>
+        <circle cx="90" cy="66" r="54" fill="#f6faf4" stroke="#dfe8dc" stroke-width="2"/>
+        <!-- comb -->
+        <path d="M70 54c-2-9 4-16 8-13 2-6 9-9 12-3 3-6 10-4 11 3 5-4 11 2 8 11" fill="#bd514a"/>
+        <!-- wattle -->
+        <path d="M84 96c-1 6 2 10 6 10s7-4 6-10z" fill="#bd514a"/>
+        <!-- head -->
+        <circle cx="90" cy="80" r="30" fill="#ffffff" stroke="#2d633b" stroke-width="3"/>
+        <!-- eyes -->
+        <circle cx="80" cy="78" r="4" fill="#204b2d"/>
+        <circle cx="100" cy="78" r="4" fill="#204b2d"/>
+        <!-- beak -->
+        <path d="M90 84l-9 7c0 4 4 7 9 7s9-3 9-7z" fill="#e6a339"/>
+        <!-- cheeks -->
+        <circle cx="70" cy="86" r="4" fill="#f3b8a8" opacity="0.7"/>
+        <circle cx="110" cy="86" r="4" fill="#f3b8a8" opacity="0.7"/>
+        <circle cx="140" cy="34" r="15" fill="#edf5e9" stroke="#4d7e47" stroke-width="2.4"/>
+        <path d="M134 34l4 4 8-9" stroke="#2d633b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <p class="empty-state-title">No sick chickens today!</p>
+      <p class="empty-state-subtitle">Every coop is healthy. New detections will appear here the moment something unusual is heard.</p>
+    </div>
+  `;
 }
 
 function createDetectionCard(detection) {
@@ -901,21 +940,23 @@ function drawReportChart() {
    RESET SESSION
 ========================================================= */
 
-$('#resetData')?.addEventListener('click', () => {
-  detections = [];
-  chartHistory = [];
-  detectionNumber = 0;
+if ($('#resetData')) {
+  $('#resetData').addEventListener('click', () => {
+    detections = [];
+    chartHistory = [];
+    detectionNumber = 0;
 
-  renderDetectionCards();
-  renderSummary();
-  drawReportChart();
-  updateMonitoringStatus();
+    renderDetectionCards();
+    renderSummary();
+    drawReportChart();
+    updateMonitoringStatus();
 
-  showToast(
-    'Session reset',
-    'All current detections and report data were cleared.'
-  );
-});
+    showToast(
+      'Session reset',
+      'All current detections and report data were cleared.'
+    );
+  });
+}
 
 /* =========================================================
    TOAST
