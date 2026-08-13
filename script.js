@@ -651,9 +651,6 @@ function createDetectionCard(detection) {
       </div>
 
       <div class="detection-footer">
-        <span>
-          Give the necessary medicine, then mark this alert as resolved.
-        </span>
 
         <button
           type="button"
